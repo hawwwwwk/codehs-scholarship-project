@@ -1,13 +1,12 @@
 package util;
 import java.util.Scanner;
 
-import world.Mob;
 import world.User;
 
 public class CUtil
 {
     //#region Color codes
-    // Thanks to Alexander Bezrodniy on Stack Overflow for the explaination!
+    // Thanks to Alexander Bezrodniy on SO for the explaination.
     // When this project is finished, delete any unused variables.
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BLACK = "\u001B[30m";
@@ -43,7 +42,7 @@ public class CUtil
     }
 
     /**
-     * Moves the cursor to a point in the console.
+     * Moves the cursor to a point in the console. Thank you Tom Jefferys on SO for the code block.
      * 
      * @param row    the console's row you want to nav to  
      * @param column the console's column you want to nav to

@@ -1,9 +1,7 @@
 package world;
 
-import java.beans.Customizer;
 import java.util.ArrayList;
 
-import javax.swing.text.DefaultEditorKit.CutAction;
 
 import util.CUtil;
 
@@ -11,13 +9,15 @@ public class Location {
     private String name;
     private int locationX;
     private int locationY;
+    private int locationIndex;
     private static ArrayList<Location> locations = new ArrayList<>();
 
     public Location(String name, int locationX, int locationY) {
         this.name = name;
-        this.locationX = locationX;
-        this.locationY = locationY;
+        this.locationIndex = Map.getLocationIndexFromCords(locationX, locationY);
     }
+
+    public Location()
 
     public static void buildWorld() { // needs to be ran before scan...
         Location homeLocation = new Location(CUtil.homeColorFormat("Home"), 2, 1);
@@ -48,52 +48,37 @@ public class Location {
     }
 
     public static Location scanCurrentTile() { 
-        switch (Map.getXCord()) { // Store locations in the index
-                                  // variable instead, this is awful \/
-            case 2:
-                if (Map.getYCord() == 1) {
-                    Engine.setMoveUpdateString(CUtil.homeColorFormat("Home, sweet home..."));
-                    Map.setCurrentLocation(0);
-                    return locations.get(0);
-                }
-                break;
-            case 5:
-                if (Map.getYCord() == 2) {
-                    Engine.setMoveUpdateString(CUtil.enemyColorFormat("Enemy1"));
-                    Map.setCurrentLocation(1);
-                    return locations.get(1);
-                } else if(Map.getYCord() == 6){
-                    Engine.setMoveUpdateString(CUtil.enemyColorFormat("Boss"));
-                    Map.setCurrentLocation(5);
-                    return locations.get(5);
-                }
-                break;
-            case 7:
-                if (Map.getYCord() == 4) {
-                    Engine.setMoveUpdateString(CUtil.enemyColorFormat("Enemy3"));
-                    Map.setCurrentLocation(3);
-                    return locations.get(3);
-                }
-                break;
-            case 11:
-                if (Map.getYCord() == 5){
-                    Engine.setMoveUpdateString(CUtil.enemyColorFormat("Enemy4"));
-                    Map.setCurrentLocation(4);
-                    return locations.get(4);
-                }
-                break;
-            case 12:
-                if (Map.getYCord() == 3){
-                    Engine.setMoveUpdateString(CUtil.enemyColorFormat("Enemy2"));
-                    Map.setCurrentLocation(2);
-                    return locations.get(2);
-                }
-                break;
-            default:break;
+        
+        switch (Map.getCurrentLocationInt()){
+            case 105: // home
+                Engine.setMoveUpdateString(CUtil.homeColorFormat("Home, sweet home..."));
+                Map.setCurrentLocation(0);
+                return locations.get(0);
+            case 91: // enemy1
+                Engine.setMoveUpdateString(CUtil.enemyColorFormat("Enemy1"));
+                Map.setCurrentLocation(1);
+                return locations.get(1);
+            case 81: // enemy2
+                Engine.setMoveUpdateString(CUtil.enemyColorFormat("Enemy2"));
+                Map.setCurrentLocation(2);
+                return locations.get(2);
+            case 59: // enemy3
+                Engine.setMoveUpdateString(CUtil.enemyColorFormat("Enemy3"));
+                Map.setCurrentLocation(3);
+                return locations.get(3);
+            case 46: // enemy4
+                Engine.setMoveUpdateString(CUtil.enemyColorFormat("Enemy4"));
+                Map.setCurrentLocation(4);
+                return locations.get(4);
+            case 23: // boss
+                Engine.setMoveUpdateString(CUtil.enemyColorFormat("Boss"));
+                Map.setCurrentLocation(5);
+                return locations.get(5);
+            default: // empty tile
+                Engine.setMoveUpdateString("...");
+                Map.setCurrentLocation(6);
+                return locations.get(6);
         }
-        Engine.setMoveUpdateString("...");
-        Map.setCurrentLocation(6);
-        return locations.get(6);
     }
 
     /** Starts dialogue with the area that you're currently on, if the user wants.

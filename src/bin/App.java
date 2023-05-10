@@ -6,7 +6,7 @@ import world.User;
 public class App{
     public static void main(String[] args) {
         CUtil.clearConsole();
-    
+
         User user = User.newUserForm();
         User.welcomeNewUser(user);
         System.out.print("\nWould you like a quick tutorial?(y/N): ");

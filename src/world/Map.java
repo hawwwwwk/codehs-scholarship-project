@@ -64,6 +64,10 @@ public class Map {
     Location.scanCurrentTile();
   }
 
+  public static int getLocationIndexFromCords(int locX, int locY){
+    return map1.length() - (15 - locX) - (17 * locY);
+  }
+
   public static void mapClear() {
     map1 = MAPBLANK;
   }
