@@ -74,8 +74,8 @@ public class User
       // pve
     }
 
-    public void userPrint(String print){
-      System.out.println(CUtil.nameColorFormat(this.getName())+": "+print);
+    public String userPrint(String print){
+      return CUtil.nameColorFormat(this.getName())+": "+print;
     }
 
     public String getName(){

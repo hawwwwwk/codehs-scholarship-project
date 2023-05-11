@@ -55,7 +55,7 @@ public class CUtil
      * Prompts to user to press enter before continuing.
      */
     public static void entCont(){
-      System.out.print(ANSI_GRAY+"press enter to continue..."+ANSI_RESET);
+      System.out.print("\n"+ANSI_GRAY+"press enter to continue..."+ANSI_RESET);
       input.nextLine();
     }
 

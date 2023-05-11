@@ -18,8 +18,8 @@ public class Mob {
         hp -= damage;
     }
     
-    public void enemyPrint(String print){
-        System.out.println(CUtil.enemyColorFormat(this.getName()) + ": " + print);
+    public String enemyPrint(String print){
+        return CUtil.enemyColorFormat(this.getName()) + ": " + print;
       }
 
     public void setName(String name){

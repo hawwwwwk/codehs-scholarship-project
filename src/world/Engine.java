@@ -1,5 +1,10 @@
 package world;
 import util.*;
+import dialogue.*;
+
+import org.w3c.dom.*;
+import javax.xml.parsers.*;
+import java.io.*;
 
 public class Engine {
 
@@ -79,7 +84,38 @@ public class Engine {
                     break;
             }
         }
+    }
 
+    public static void locationDialogueHandler(File file, User user, Mob mob){
+        try{
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dbBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dbBuilder.parse(file);
+            doc.getDocumentElement().normalize();
+            NodeList nList = doc.getElementsByTagName("message");
+            for(int i = 0; i < nList.getLength(); i++){
+                CUtil.clearConsole();
+                Node nNode = nList.item(i);
+                String outputString;
+                Element eElement = (Element) nNode;
+                switch(eElement.getAttribute("from")){
+                    case "user": 
+                        outputString = user.userPrint(nNode.getTextContent());
+                        break;
+                    case "enemy":
+                        outputString = mob.enemyPrint(nNode.getTextContent());
+                        break;
+                    default:
+                        outputString = nNode.getTextContent();
+                        break;
+                }
+                System.out.println(outputString);
+                CUtil.entCont();
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     public static String getMoveUpdateString(){

@@ -1,9 +1,11 @@
 package world;
 
 import java.util.ArrayList;
-
-
 import util.CUtil;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+import org.jdom2.*;
 
 public class Location {
     private String name;
@@ -16,8 +18,6 @@ public class Location {
         this.name = name;
         this.locationIndex = Map.getLocationIndexFromCords(locationX, locationY);
     }
-
-    public Location()
 
     public static void buildWorld() { // needs to be ran before scan...
         Location homeLocation = new Location(CUtil.homeColorFormat("Home"), 2, 1);
@@ -44,7 +44,10 @@ public class Location {
         );
         String exploreCurrentLocationYN = CUtil.input.nextLine();
         if(!exploreCurrentLocationYN.equalsIgnoreCase("y")){return;}
-        locationDialogue(Map.getCurrentLocationInt(), user);
+        Mob trainingMob = new Mob("Training Mob", 1);
+        File file = new File("/src/dialogue/enemy1.xml");
+        Engine.locationDialogueHandler(file, user, trainingMob);
+        String hi = CUtil.input.nextLine();
     }
 
     public static Location scanCurrentTile() { 
@@ -90,6 +93,8 @@ public class Location {
         switch(i){
             case 0: // home
                 CUtil.clearConsole();
+
+
                 System.out.println("It's cold outside, so you head into the house.");
                 CUtil.entCont();
                 System.out.print("Do you want to heal yourself by the fire?(y/N): ");
