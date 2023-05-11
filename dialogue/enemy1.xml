@@ -1,9 +1,9 @@
-<?xml version = "1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <dialogue id="101">
     <message>...</message>
     <message>It's oddly quiet.</message>
     <message>You hear some russeling in the leaves...</message>
-    <message> Training Mob Appeared!</message>
+    <message>Training Mob Appeared!</message>
     <message from="user">Gahh! A monster!</message>
     <message>...</message>
     <message>The monster was a tiny thing, a small sphere shaped gelantonis blob. It was almost comical.</message>

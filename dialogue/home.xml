@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dialogue id="102">
+    <message>It's cold outside, so you head into the house.</message>
+    <message>Do you want to heal yourself by the fire?</message>
+    <choices>
+        <choice id="1" name="Heal Yourself"></choice>
+        <choice id="2" name="Don't Heal Yourself"></choice>
+        <choice id="4" name="test choice"></choice>
+    </choices>
+</dialogue>

@@ -11,7 +11,6 @@ public class Mob {
         this.name = name;
         this.hp = hp;
         this.maxHp = (int)hp;
-        System.out.println(CUtil.enemyColorFormat(name) + " appeared!");
     }
 
     public void attackEnemy(double damage){

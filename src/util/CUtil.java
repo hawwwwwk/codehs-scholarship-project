@@ -59,6 +59,14 @@ public class CUtil
       input.nextLine();
     }
 
+    public static int entContOrBack(){
+      System.out.print("\n"+ANSI_GRAY+"press enter to continue, or 'b' to go back a message."+ANSI_RESET);
+      if(input.nextLine().equalsIgnoreCase("b")){
+        return -2;
+      }
+      return 0;
+    }
+
     public static void wallOfTreesNotification(){
       System.out.println(
         ANSI_RED+"There's a wall of trees in the way..."+ANSI_RESET

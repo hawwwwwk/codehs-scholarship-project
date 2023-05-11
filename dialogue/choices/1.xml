@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dialogue id="1001">
+    <message>You warm yourself by the fire...</message>
+    <message>Your health is now full!</message>
+    <FILL_HEALTH/>
+</dialogue>

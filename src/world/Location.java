@@ -3,23 +3,22 @@ package world;
 import java.util.ArrayList;
 import util.CUtil;
 import java.io.File;
-import java.io.IOException;
-import java.util.List;
-import org.jdom2.*;
+import java.io.FileNotFoundException;
 
 public class Location {
     private String name;
     private int locationX;
     private int locationY;
-    private int locationIndex;
+    // private int locationIndex; TODO: refactor a use for this
     private static ArrayList<Location> locations = new ArrayList<>();
 
     public Location(String name, int locationX, int locationY) {
         this.name = name;
-        this.locationIndex = Map.getLocationIndexFromCords(locationX, locationY);
+        this.locationX = locationX;
+        this.locationY = locationY;
     }
 
-    public static void buildWorld() { // needs to be ran before scan...
+    public static void buildWorld() { // (needs to be ran before scan!)
         Location homeLocation = new Location(CUtil.homeColorFormat("Home"), 2, 1);
         Location enemyLocation1 = new Location(CUtil.enemyColorFormat("Enemy1"), 5, 2);
         Location enemyLocation2 = new Location(CUtil.enemyColorFormat("Enemy2"), 12, 3);
@@ -45,8 +44,13 @@ public class Location {
         String exploreCurrentLocationYN = CUtil.input.nextLine();
         if(!exploreCurrentLocationYN.equalsIgnoreCase("y")){return;}
         Mob trainingMob = new Mob("Training Mob", 1);
-        File file = new File("dialogue/enemy1.xml");
-        Engine.locationDialogueHandler(file, user, trainingMob);
+        File file = new File("dialogue/home.xml");
+        try {
+            Engine.locationDialogueHandler(file, user, trainingMob);
+        } catch (FileNotFoundException e) {
+            
+            e.printStackTrace();
+        }
     }
 
     public static Location scanCurrentTile() { 
@@ -87,10 +91,11 @@ public class Location {
      * 
      * @param i Location's position on ArrayList location<>
      */
-    public static void locationDialogue(int i, User user){
+    public static void locationDialogue(int i, User user){ 
+        // TODO: REFACTOR THIS OUT OF EXISTANCE PLZ AND THANK YOU
         CUtil.clearConsole();
         switch(i){
-            case 0: // home
+            case 0: // home 
                 CUtil.clearConsole();
 
 
