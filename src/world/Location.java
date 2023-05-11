@@ -3,7 +3,6 @@ package world;
 import java.util.ArrayList;
 import util.CUtil;
 import java.io.File;
-import java.io.FileNotFoundException;
 
 public class Location {
     private String name;
@@ -45,12 +44,7 @@ public class Location {
         if(!exploreCurrentLocationYN.equalsIgnoreCase("y")){return;}
         Mob trainingMob = new Mob("Training Mob", 1);
         File file = new File("dialogue/home.xml");
-        try {
-            Engine.locationDialogueHandler(file, user, trainingMob);
-        } catch (FileNotFoundException e) {
-            
-            e.printStackTrace();
-        }
+        Engine.locationDialogueHandler(file, user, trainingMob);
     }
 
     public static Location scanCurrentTile() { 
@@ -92,31 +86,9 @@ public class Location {
      * @param i Location's position on ArrayList location<>
      */
     public static void locationDialogue(int i, User user){ 
-        // TODO: REFACTOR THIS OUT OF EXISTANCE PLZ AND THANK YOU
+        // TODO: REFACTOR THIS OUT OF EXISTANCE PLZ AND THANK YOU IT IS UNUSED
         CUtil.clearConsole();
         switch(i){
-            case 0: // home 
-                CUtil.clearConsole();
-
-
-                System.out.println("It's cold outside, so you head into the house.");
-                CUtil.entCont();
-                System.out.print("Do you want to heal yourself by the fire?(y/N): ");
-                String homeHealResponse = CUtil.input.nextLine();
-                if (homeHealResponse.equalsIgnoreCase("n")){
-                    System.out.println("You decide you'd rather be cold for some reason, and head back out.");
-                    CUtil.entCont();
-                } else if (homeHealResponse.equalsIgnoreCase("y")){
-                    System.out.println("You sit by the fire for a second, it warms your "+CUtil.ANSI_CYAN+"soul"+CUtil.ANSI_RESET+"...");
-                    System.out.println("(Your health was refilled!)");
-                    user.setHealth(3);
-                    CUtil.entCont();
-                } else {
-                    System.out.println("\nStunned by the fact that you are somehow unable to type 'y' nor 'n', you leave the house.");
-                    CUtil.entCont();
-                }
-                break;
-
             case 1: // enemy1
                 CUtil.clearConsole();
                 System.out.println("...");

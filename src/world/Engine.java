@@ -85,7 +85,7 @@ public class Engine {
         }
     }
 
-    public static void locationDialogueHandler(File file, User user, Mob mob) throws FileNotFoundException{
+    public static void locationDialogueHandler(File file, User user, Mob mob){
         try{
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dbBuilder = dbFactory.newDocumentBuilder();
@@ -115,19 +115,7 @@ public class Engine {
                             }
                             System.out.print("\nWhich option do you pick?: ");
                             String rawUserOption = CUtil.input.nextLine();
-                            try {
-                                int userOption = Integer.parseInt(rawUserOption);
-                                File file2 = new File(
-                                    "dialogue/choices/"+
-                                    (((Element) nChoiceList.item(userOption-1)).getAttribute("id"))+
-                                    ".xml"
-                                );
-                                locationDialogueHandler(file2, user, mob); // i love recurssion!!!!!!!
-                                exitCondition = true;
-                            } catch (Exception e) {
-                                CUtil.unrecognizedInput("What you typed");
-                                CUtil.entCont();
-                            }
+                            exitCondition = readChoiceXMLFiles(rawUserOption, nChoiceList, user, mob);
                         }
                         break;
                     case "FILL_HEALTH": 
@@ -139,6 +127,23 @@ public class Engine {
         }
         catch(Exception e){
             e.printStackTrace();
+        }
+    }
+
+    public static boolean readChoiceXMLFiles(String rawUserOption, NodeList nChoiceList, User user, Mob mob){
+        try {
+            int userOption = Integer.parseInt(rawUserOption);
+            File file2 = new File(
+                "dialogue/choices/"+
+                (((Element) nChoiceList.item(userOption-1)).getAttribute("id"))+
+                ".xml"
+            );
+            locationDialogueHandler(file2, user, mob); // i love recurssion!!!!!!!
+            return true;
+        } catch (Exception e) {
+            CUtil.unrecognizedInput("What you typed");
+            CUtil.entCont();
+            return false;
         }
     }
 
