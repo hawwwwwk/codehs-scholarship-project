@@ -45,9 +45,8 @@ public class Location {
         String exploreCurrentLocationYN = CUtil.input.nextLine();
         if(!exploreCurrentLocationYN.equalsIgnoreCase("y")){return;}
         Mob trainingMob = new Mob("Training Mob", 1);
-        File file = new File("/src/dialogue/enemy1.xml");
+        File file = new File("dialogue/enemy1.xml");
         Engine.locationDialogueHandler(file, user, trainingMob);
-        String hi = CUtil.input.nextLine();
     }
 
     public static Location scanCurrentTile() { 
