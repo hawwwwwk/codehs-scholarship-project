@@ -42,12 +42,13 @@ public class Location {
         );
         String exploreCurrentLocationYN = CUtil.input.nextLine();
         if(!exploreCurrentLocationYN.equalsIgnoreCase("y")){return;}
+        // in case a mob isn't needed
+        Mob dummy = new Mob("", -1);
 
         switch(Map.getCurrentLocationInt()){
             case 0: // home
-                Mob homeDummy = new Mob("home dummy", -1);
                 File fHome = new File(DIALOGUE_PATH+"/home."+CUtil.getCodeHsFix());
-                engine.locationDialogueHandler(fHome, user, homeDummy);
+                engine.locationDialogueHandler(fHome, user, dummy);
                 break;
             case 1: // enemy1
                 Mob trainingMob = new Mob("Training Mob", 3);
@@ -59,6 +60,11 @@ public class Location {
             case 4: // enemy4
             case 5: // boss
             default: // empty tile
+                // placeholder while flushing cases
+                if(Map.getCurrentLocationInt() <= 5 || Map.getCurrentLocationInt() >= 2){
+                    File file = new File(DIALOGUE_PATH+"/PLACEHOLDER."+CUtil.getCodeHsFix());
+                    engine.locationDialogueHandler(file, user, dummy);
+                }
                 Mob emptyTileMob = new Mob("emptyTile", -1);
                 File fEmpty = new File(DIALOGUE_PATH+"/empty-tile."+CUtil.getCodeHsFix());
                 engine.locationDialogueHandler(fEmpty, user, emptyTileMob);

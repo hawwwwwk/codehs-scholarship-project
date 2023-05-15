@@ -17,7 +17,7 @@ public class Engine {
         Location.buildWorld();
         boolean exitCondition = false;
         Map.updateMapWithCoordinates();
-        while (!exitCondition){ 
+        while (!exitCondition){
             CUtil.clearConsole();
             System.out.print(
                 "What would you like to do, "+
