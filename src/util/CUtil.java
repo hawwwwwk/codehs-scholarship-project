@@ -5,6 +5,13 @@ import world.User;
 
 public class CUtil
 {
+    // For some reason, codeHS does NOT save any files that aren't '.java'. This means when I have xml files
+    // in the sandbox, it doesn't save them. I have NO idea why it does this, and I can't seem to force the files to save with
+    // just the save button. So, the only way for me to fix this is to save the documents on CodeHS as '.xm' files. Trying
+    // to fix this costed me hours of development time...
+    private static String codeHsFixExtension = "xml";
+
+
     //#region Color codes
     // Thanks to Alexander Bezrodniy on SO for the explaination.
     // When this project is finished, delete any unused variables.
@@ -111,5 +118,9 @@ public class CUtil
     public static String numberColorFormat(String number){
       return ANSI_BLUE+number+ANSI_RESET;
     }
+
+    public static String getCodeHsFix(){
+      return codeHsFixExtension;
+  }
 
   }

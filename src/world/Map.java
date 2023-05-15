@@ -65,6 +65,9 @@ public class Map {
   }
 
   public static int getLocationIndexFromCords(int locX, int locY){
+    System.out.println(xCord);
+    System.out.println(yCord);
+    CUtil.entCont();
     return map1.length() - (15 - locX) - (17 * locY);
   }
 

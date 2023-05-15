@@ -4,13 +4,13 @@ import util.*;
 import org.w3c.dom.*;
 import javax.xml.parsers.*;
 import java.io.*;
-
 public class Engine {
 
-    private Engine(){
-        throw new IllegalStateException("Not a public class plz no touchy <3");
+    public Engine(){
+        // x
     }
 
+    public static final Engine engine = new Engine();
     private static String moveUpdateString = "...";
 
     public static void mainMenu(User user){
@@ -28,14 +28,14 @@ public class Engine {
             String mainMenuInput = CUtil.input.nextLine();
             switch(mainMenuInput){
                 case "m":
-                    moveMenu(user);
+                    Engine.moveMenu(user);
                     break;
                 case "x": 
                     System.out.print(
                         "Are you sure you want to exit?\n\n"+
-                        CUtil.ANSI_RED+"Your progress will NOT be saved: "+CUtil.ANSI_RESET
+                        CUtil.ANSI_RED+"Your progress will NOT be saved(y/N): "+CUtil.ANSI_RESET
                     );
-                    if(!CUtil.input.nextLine().equalsIgnoreCase("y")){
+                    if(CUtil.input.nextLine().equalsIgnoreCase("y")){
                         exitCondition = true;
                     }
                     break;
@@ -76,7 +76,7 @@ public class Engine {
                     exitCondition=true;
                     break;
                 case "e":
-                    Location.exploreCurrentLocation(user);
+                    Location.exploreCurrentLocation(user, engine);
                     break;
                 default:
                     CUtil.unrecognizedInput(userDirectionString);
@@ -85,63 +85,102 @@ public class Engine {
         }
     }
 
-    public static void locationDialogueHandler(File file, User user, Mob mob){
-        try{
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dbBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dbBuilder.parse(file);
+    public void locationDialogueHandler(File file, User user, Mob mob) {
+        try {
+            Document doc = parseDoc(file);
 
             doc.getDocumentElement().normalize();
-
             NodeList nList = doc.getElementsByTagName("*");
-            for(int i = 0; i < nList.getLength(); i++){
+            for (int i = 0; i < nList.getLength(); i++) {
                 CUtil.clearConsole();
                 Node nNode = nList.item(i);
                 Element eElement = (Element) nNode;
-                switch(eElement.getNodeName()){
+                boolean exitCondition = false;
+                switch (eElement.getNodeName()) {
                     case "message":
                         messagesHandler(eElement, nNode, user, mob);
                         CUtil.entCont();
                         break;
                     case "choices":
-                        boolean exitCondition = false;
-                        while(!exitCondition){
+                        while (!exitCondition) {
                             CUtil.clearConsole();
                             NodeList nChoiceList = eElement.getElementsByTagName("choice");
-                            for (int j = 0; j < nChoiceList.getLength()-1; j++) {
+                            for (int j = 0; j < nChoiceList.getLength(); j++) {
                                 Node nChoiceNode = nChoiceList.item(j);
                                 Element fElement = (Element) nChoiceNode;
-                                System.out.println((j+1)+". "+fElement.getAttribute("name"));
+                                System.out.println((j + 1) + ". " + fElement.getAttribute("name"));
                             }
                             System.out.print("\nWhich option do you pick?: ");
                             String rawUserOption = CUtil.input.nextLine();
                             exitCondition = readChoiceXMLFiles(rawUserOption, nChoiceList, user, mob);
                         }
                         break;
-                    case "FILL_HEALTH": 
+                    case "yes-no-choice":
+                        readYesNoChoiceXmlFiles(nNode, user, mob);
+                        break;
+                    case "FILL_HEALTH":
                         user.setHealth(user.getHealth());
                         break;
-                    default: break;
+                    default:
+                        break;
                 }
             }
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static boolean readChoiceXMLFiles(String rawUserOption, NodeList nChoiceList, User user, Mob mob){
+    public Document parseDoc(File file){
+        try{
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = dbf.newDocumentBuilder();
+            
+            return documentBuilder.parse(new FileInputStream(file));
+        } catch(Exception e){
+            e.printStackTrace();
+        } return null;
+    }
+
+    public void readYesNoChoiceXmlFiles(Node nNode, User user, Mob mob){
+        int inputID = 0;
+        boolean exitCondition = false;
+        while(!exitCondition){
+            CUtil.clearConsole();
+            System.out.print("Would you like to '"+nNode.getTextContent()+"'(y/N)?: ");
+            
+            String userInput = CUtil.input.nextLine();
+            if(userInput.equalsIgnoreCase("y")){
+                inputID = Integer.parseInt(((Element) nNode).getAttribute("yes-id"));
+                exitCondition = true;
+            } else if(userInput.equalsIgnoreCase("n")){
+                inputID = Integer.parseInt(((Element) nNode).getAttribute("no-id"));
+                exitCondition = true;
+            } else {
+                CUtil.unrecognizedInput(userInput);
+            }
+        }
+        try {
+            File file = new File(Location.DIALOGUE_PATH+"/choices/"+inputID+"."+CUtil.getCodeHsFix());
+            locationDialogueHandler(file, user, mob);
+        } catch(Exception e){
+            e.printStackTrace();
+            CUtil.entCont();
+        }
+    }
+
+    public boolean readChoiceXMLFiles(String rawUserOption, NodeList nChoiceList, User user, Mob mob){
         try {
             int userOption = Integer.parseInt(rawUserOption);
-            File file2 = new File(
-                "dialogue/choices/"+
+            File file = new File(
+                Location.DIALOGUE_PATH+
+                "/choices/"+
                 (((Element) nChoiceList.item(userOption-1)).getAttribute("id"))+
-                ".xml"
+                "."+CUtil.getCodeHsFix()
             );
-            locationDialogueHandler(file2, user, mob); // i love recurssion!!!!!!!
+            locationDialogueHandler(file, user, mob); // i love recurssion!!!!!!!
             return true;
         } catch (Exception e) {
-            CUtil.unrecognizedInput("What you typed");
+            CUtil.unrecognizedInput(rawUserOption);
             CUtil.entCont();
             return false;
         }

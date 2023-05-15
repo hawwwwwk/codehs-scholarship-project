@@ -8,8 +8,9 @@ public class Location {
     private String name;
     private int locationX;
     private int locationY;
-    // private int locationIndex; TODO: refactor a use for this
     private static ArrayList<Location> locations = new ArrayList<>();
+
+    public static final String DIALOGUE_PATH = System.getProperty("user.dir")+"/dialogue/";
 
     public Location(String name, int locationX, int locationY) {
         this.name = name;
@@ -18,6 +19,7 @@ public class Location {
     }
 
     public static void buildWorld() { // (needs to be ran before scan!)
+        
         Location homeLocation = new Location(CUtil.homeColorFormat("Home"), 2, 1);
         Location enemyLocation1 = new Location(CUtil.enemyColorFormat("Enemy1"), 5, 2);
         Location enemyLocation2 = new Location(CUtil.enemyColorFormat("Enemy2"), 12, 3);
@@ -32,45 +34,61 @@ public class Location {
         locations.add(enemyLocation4);
         locations.add(bossLocation);
         locations.add(emptyTile);
-        
-        Map.setCurrentLocation(6); 
     }
 
-    public static void exploreCurrentLocation(User user){
+    public static void exploreCurrentLocation(User user, Engine engine){
         System.out.print(
             "\nWould you like to explore the '"+Map.getCurrentLocation().getName()+"' tile?(y/N): "
         );
         String exploreCurrentLocationYN = CUtil.input.nextLine();
         if(!exploreCurrentLocationYN.equalsIgnoreCase("y")){return;}
-        Mob trainingMob = new Mob("Training Mob", 1);
-        File file = new File("dialogue/home.xml");
-        Engine.locationDialogueHandler(file, user, trainingMob);
+
+        switch(Map.getCurrentLocationInt()){
+            case 0: // home
+                Mob homeDummy = new Mob("home dummy", -1);
+                File fHome = new File(DIALOGUE_PATH+"/home."+CUtil.getCodeHsFix());
+                engine.locationDialogueHandler(fHome, user, homeDummy);
+                break;
+            case 1: // enemy1
+                Mob trainingMob = new Mob("Training Mob", 3);
+                File fEnemy1 = new File(DIALOGUE_PATH+"/enemy1."+CUtil.getCodeHsFix());
+                engine.locationDialogueHandler(fEnemy1, user, trainingMob);
+                break;
+            case 2: // enemy2
+            case 3: // enemy3
+            case 4: // enemy4
+            case 5: // boss
+            default: // empty tile
+                Mob emptyTileMob = new Mob("emptyTile", -1);
+                File fEmpty = new File(DIALOGUE_PATH+"/empty-tile."+CUtil.getCodeHsFix());
+                engine.locationDialogueHandler(fEmpty, user, emptyTileMob);
+        }
     }
 
     public static Location scanCurrentTile() { 
         
         switch (Map.getCurrentLocationInt()){
-            case 105: // home
+            case 0: // home
                 Engine.setMoveUpdateString(CUtil.homeColorFormat("Home, sweet home..."));
                 Map.setCurrentLocation(0);
                 return locations.get(0);
-            case 91: // enemy1
+            case 1: // enemy1
                 Engine.setMoveUpdateString(CUtil.enemyColorFormat("Enemy1"));
                 Map.setCurrentLocation(1);
                 return locations.get(1);
-            case 81: // enemy2
+            case 2: // enemy2
                 Engine.setMoveUpdateString(CUtil.enemyColorFormat("Enemy2"));
                 Map.setCurrentLocation(2);
                 return locations.get(2);
-            case 59: // enemy3
+            case 3: // enemy3
                 Engine.setMoveUpdateString(CUtil.enemyColorFormat("Enemy3"));
                 Map.setCurrentLocation(3);
                 return locations.get(3);
-            case 46: // enemy4
+            case 4: // enemy4
                 Engine.setMoveUpdateString(CUtil.enemyColorFormat("Enemy4"));
                 Map.setCurrentLocation(4);
                 return locations.get(4);
-            case 23: // boss
+            case 5: // boss
                 Engine.setMoveUpdateString(CUtil.enemyColorFormat("Boss"));
                 Map.setCurrentLocation(5);
                 return locations.get(5);
@@ -78,122 +96,6 @@ public class Location {
                 Engine.setMoveUpdateString("...");
                 Map.setCurrentLocation(6);
                 return locations.get(6);
-        }
-    }
-
-    /** Starts dialogue with the area that you're currently on, if the user wants.
-     * 
-     * @param i Location's position on ArrayList location<>
-     */
-    public static void locationDialogue(int i, User user){ 
-        // TODO: REFACTOR THIS OUT OF EXISTANCE PLZ AND THANK YOU IT IS UNUSED
-        CUtil.clearConsole();
-        switch(i){
-            case 1: // enemy1
-                CUtil.clearConsole();
-                System.out.println("...");
-                CUtil.entCont();
-                user.userPrint("It's oddly quiet.");
-                CUtil.entCont();
-                System.out.println("You hear some russeling in the leaves...");
-                CUtil.clearConsole();
-                Mob trainingMob = new Mob("Training Mob", 1);
-                user.userPrint("Gahh! A monster appeared!");
-                CUtil.entCont();
-                System.out.println("...");
-                CUtil.entCont();
-                System.out.println("The monster was a tiny thing, a small sphere shaped gelantonis blob. It was almost comical.");
-                user.userPrint("You're not very big.");
-                CUtil.entCont();
-                trainingMob.enemyPrint("Well, thanks.");
-                CUtil.entCont();
-                user.userPrint("You're supposed to be an enemy?");
-                CUtil.entCont();
-                trainingMob.enemyPrint("And you're supposed to be an adventurer?");
-                CUtil.entCont();
-                user.userPrint("I guess? I don't knkw, I just expected my first mob to be bigger.");
-                CUtil.entCont();
-                trainingMob.enemyPrint("Check the name, buddy.");
-                CUtil.entCont();
-                trainingMob.enemyPrint("And you know? Not all of us get what we want in life. I didn't ask to be 'baby's first enemy'. I was just born into this profession.");
-                CUtil.entCont();
-                CUtil.clearConsole();
-                System.out.println("...");
-                CUtil.entCont();
-                user.userPrint("Yeesh dude, I'm sorry.");
-                CUtil.entCont();
-                System.out.println("The thing rolled it's tiny black eyes.");
-                trainingMob.enemyPrint("It's whatever. I'm used to it.");
-                CUtil.entCont();
-                System.out.println("You really don't know what to do here, it feels awkward to push questions about his size any longer.");
-                user.userPrint("So, what, am I supposed to fight you or something?");
-                CUtil.entCont();
-                trainingMob.enemyPrint("I mean I feel the name is self explanatory.");
-                CUtil.entCont();
-                user.userPrint("Ok, yeah, I guess.");
-                CUtil.entCont();
-                trainingMob.enemyPrint("Then bring it.");
-                CUtil.entCont();
-                
-                System.out.println("You've started a battle against "+ CUtil.enemyColorFormat(trainingMob.getName())+"!\n");
-                boolean fightActive = true;
-                while (fightActive){ // put this into seperate combat form in mob class
-                    CUtil.clearConsole();
-                    System.out.println(CUtil.enemyColorFormat(trainingMob.getName())+" has "+trainingMob.getHp()+" health.");
-                    System.out.println("What do you want to do?\n");
-                    System.out.println(
-                        "a: attack\n"+
-                        "x: flee\n"+
-                        "e: analyze\n"
-                    );
-                    String userInput = CUtil.input.nextLine();
-                    switch(userInput){
-                        case "a":
-                            trainingMob.setHp(trainingMob.getHp()-1);
-                            System.out.println("\nYou attack "+CUtil.enemyColorFormat(trainingMob.getName())+"!");
-                            System.out.println("You do "+CUtil.numberColorFormat("1")+" damage!");
-                            CUtil.entCont();
-                            if(trainingMob.getHp() <= 0){
-                                System.out.println("\n"+CUtil.enemyColorFormat(trainingMob.getName())+" was defeated!\n");
-                                System.out.println("Ignoring the moral implecations of killing something so innocent, you move on.");
-                                CUtil.entCont();
-                                fightActive = false;
-                            }
-                            break;
-                        case "x":
-                            System.out.println("\nTrying to flee...");
-                            trainingMob.enemyPrint("Running away so soon?\n");
-                            System.out.println("Unable to flee.");
-                            CUtil.entCont();
-                            break;
-                        case "e":
-                            System.out.println("\nYou analyze the "+CUtil.enemyColorFormat(trainingMob.getName())+".\n");
-                            System.out.println(
-                                "Mob: "+CUtil.enemyColorFormat(trainingMob.getName())+
-                                "\nHealth: "+trainingMob.getHp()+"/"+trainingMob.getMaxHp()+
-                                "\nDesc: A slimey blob. Don't touch it."
-                            );
-                            CUtil.entCont();
-                            break;
-                        default:break;
-                    }
-                }
-                break;
-            case 2: // enemy2
-                break;
-            case 3: // enemy3
-                break;
-            case 4: // enemy4
-                break;
-            case 5: // boss
-                break;
-            case 6: // empty tile
-                System.out.println(
-                    "There doesn't seem to be anything here..."
-                );
-                CUtil.entCont();
-                break;
-            default: break;
         }
     }
 

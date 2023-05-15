@@ -23,4 +23,9 @@
     <message from="user">Soo... am I supposed to fight you or something?</message>
     <message from="enemy">...</message>
     <message from="user">Y-yeah... that was a dumb question... lets just fight I guess-</message>
+    <message from="enemy">Yeah. Unfortunatly, the person who madethis program ran out of time and didn't get the fight form done.</message>
+    <message from="user">Well, that's unlucky.</message>
+    <message from="enemy">Yeah, it really is. What can you do though...</message>
+    <message from="user">Well then, catch you later I suppose</message>
+    <message>You leave the Training Mob.</message>
 </dialogue>

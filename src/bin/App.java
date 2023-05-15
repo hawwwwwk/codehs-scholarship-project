@@ -4,6 +4,8 @@ import world.Engine;
 import world.User;
 
 public class App{
+
+    public final Engine engine = new Engine();
     public static void main(String[] args) {
         CUtil.clearConsole();
 

@@ -2,9 +2,5 @@
 <dialogue id="102">
     <message>It's cold outside, so you head into the house.</message>
     <message>Do you want to heal yourself by the fire?</message>
-    <choices>
-        <choice id="1" name="Heal Yourself"></choice>
-        <choice id="2" name="Don't Heal Yourself"></choice>
-        <choice id="4" name="test choice"></choice>
-    </choices>
+    <yes-no-choice yes-id="1" no-id="2">Heal yourself</yes-no-choice>
 </dialogue>
