@@ -202,8 +202,6 @@ public class Engine {
         System.out.println(outputString);
     }
 
-    
-
     public static String getMoveUpdateString(){
         return moveUpdateString;
     }

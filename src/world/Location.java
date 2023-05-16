@@ -1,6 +1,7 @@
 package world;
 
 import java.util.ArrayList;
+import java.util.List;
 import util.CUtil;
 import java.io.File;
 
@@ -34,6 +35,9 @@ public class Location {
         locations.add(enemyLocation4);
         locations.add(bossLocation);
         locations.add(emptyTile);
+
+        
+        Map.setCurrentLocation(0);
     }
 
     public static void exploreCurrentLocation(User user, Engine engine){
@@ -60,48 +64,48 @@ public class Location {
             case 4: // enemy4
             case 5: // boss
             default: // empty tile
-                // placeholder while flushing cases
-                if(Map.getCurrentLocationInt() <= 5 || Map.getCurrentLocationInt() >= 2){
+                // TODO: fix this placeholder after flushing other cases
+                if(Map.getCurrentLocationInt() <= 5 && Map.getCurrentLocationInt() >= 2){
                     File file = new File(DIALOGUE_PATH+"/PLACEHOLDER."+CUtil.getCodeHsFix());
                     engine.locationDialogueHandler(file, user, dummy);
+                } else {
+                    Mob emptyTileMob = new Mob("emptyTile", -1);
+                    File fEmpty = new File(DIALOGUE_PATH+"/empty-tile."+CUtil.getCodeHsFix());
+                    engine.locationDialogueHandler(fEmpty, user, emptyTileMob);
                 }
-                Mob emptyTileMob = new Mob("emptyTile", -1);
-                File fEmpty = new File(DIALOGUE_PATH+"/empty-tile."+CUtil.getCodeHsFix());
-                engine.locationDialogueHandler(fEmpty, user, emptyTileMob);
         }
     }
 
-    public static Location scanCurrentTile() { 
-        
-        switch (Map.getCurrentLocationInt()){
-            case 0: // home
+    public static void scanCurrentTile() { 
+        switch (Map.getPlayerCordIndex()){
+            case 114: // home
                 Engine.setMoveUpdateString(CUtil.homeColorFormat("Home, sweet home..."));
                 Map.setCurrentLocation(0);
-                return locations.get(0);
-            case 1: // enemy1
+                break;
+            case 100: // enemy1
                 Engine.setMoveUpdateString(CUtil.enemyColorFormat("Enemy1"));
                 Map.setCurrentLocation(1);
-                return locations.get(1);
-            case 2: // enemy2
+                break;
+            case 90: // enemy2
                 Engine.setMoveUpdateString(CUtil.enemyColorFormat("Enemy2"));
                 Map.setCurrentLocation(2);
-                return locations.get(2);
-            case 3: // enemy3
+                break;
+            case 68: // enemy3
                 Engine.setMoveUpdateString(CUtil.enemyColorFormat("Enemy3"));
                 Map.setCurrentLocation(3);
-                return locations.get(3);
-            case 4: // enemy4
+                break;
+            case 55: // enemy4
                 Engine.setMoveUpdateString(CUtil.enemyColorFormat("Enemy4"));
                 Map.setCurrentLocation(4);
-                return locations.get(4);
-            case 5: // boss
+                break;
+            case 32: // boss
                 Engine.setMoveUpdateString(CUtil.enemyColorFormat("Boss"));
                 Map.setCurrentLocation(5);
-                return locations.get(5);
+                break;
             default: // empty tile
                 Engine.setMoveUpdateString("...");
                 Map.setCurrentLocation(6);
-                return locations.get(6);
+                break;
         }
     }
 
@@ -135,5 +139,9 @@ public class Location {
 
     public static Location getLocation(int index){
         return locations.get(index);
+    }
+
+    public static List<Location> getLocations(){
+        return locations;
     }
 }

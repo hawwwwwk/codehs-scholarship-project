@@ -18,8 +18,6 @@ public class Map {
   private static Location currentLocation;
   private static int currentLocationIndex;
 
-  private static int playerCordIndex = map1.length() - (16 - xCord) - (16 * yCord); // plz make this formula local
-
   private Map() {
     throw new IllegalStateException("Not a public class.");
   }
@@ -54,21 +52,20 @@ public class Map {
   }
 
   public static void updateMapWithCoordinates() {
-    playerCordIndex = map1.length() - (15 - xCord) - (17 * yCord);
-
-    String str1 = map1.substring(0, playerCordIndex - 1);
-    String str2 = map1.substring(playerCordIndex, map1.length());
-    String cyanCharacter = CUtil.currentPlayerPosition(map1.substring(playerCordIndex - 1, playerCordIndex));
-
+    String str1 = map1.substring(0, getPlayerCordIndex() - 1);
+    String str2 = map1.substring(getPlayerCordIndex(), map1.length());
+    String cyanCharacter = CUtil.currentPlayerPosition(map1.substring(getPlayerCordIndex() - 1, getPlayerCordIndex()));
+    
     Map.setMap1String(str1 + cyanCharacter + str2);
     Location.scanCurrentTile();
   }
 
-  public static int getLocationIndexFromCords(int locX, int locY){
-    System.out.println(xCord);
-    System.out.println(yCord);
-    CUtil.entCont();
-    return map1.length() - (15 - locX) - (17 * locY);
+  public static int getPlayerCordIndex(){
+    return map1.length() - (15 - xCord) - (17 * yCord);
+  }
+
+  public static int getPlayerCordIndex(int xCorda, int yCorda){
+    return map1.length() - (15 - xCorda) - (17 * yCorda);
   }
 
   public static void mapClear() {
