@@ -7,8 +7,6 @@ public class User
     private double balance;
     private int health;
 
-    // new user form variable
-
     public User(String name)
     {
         this.name = name;

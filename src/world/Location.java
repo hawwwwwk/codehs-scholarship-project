@@ -64,7 +64,6 @@ public class Location {
             case 4: // enemy4
             case 5: // boss
             default: // empty tile
-                // TODO: fix this placeholder after flushing other cases
                 if(Map.getCurrentLocationInt() <= 5 && Map.getCurrentLocationInt() >= 2){
                     File file = new File(DIALOGUE_PATH+"/PLACEHOLDER."+CUtil.getCodeHsFix());
                     engine.locationDialogueHandler(file, user, dummy);

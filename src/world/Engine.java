@@ -53,6 +53,7 @@ public class Engine {
             CUtil.clearConsole();
             System.out.println(
                 "! - Use 'wasd' to move spaces\n"+
+                "w (up), a (left), s (down), d (right)"+
                 "('e' to explore tile, 'x' to exit back to menu.)\n\n"+
                 Map.getMap1String()
             );
@@ -177,7 +178,7 @@ public class Engine {
                 (((Element) nChoiceList.item(userOption-1)).getAttribute("id"))+
                 "."+CUtil.getCodeHsFix()
             );
-            locationDialogueHandler(file, user, mob); // i love recurssion!!!!!!!
+            locationDialogueHandler(file, user, mob);
             return true;
         } catch (Exception e) {
             CUtil.unrecognizedInput(rawUserOption);
