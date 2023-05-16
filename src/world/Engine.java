@@ -53,7 +53,7 @@ public class Engine {
             CUtil.clearConsole();
             System.out.println(
                 "! - Use 'wasd' to move spaces\n"+
-                "w (up), a (left), s (down), d (right)"+
+                "w (up), a (left), s (down), d (right)\n"+
                 "('e' to explore tile, 'x' to exit back to menu.)\n\n"+
                 Map.getMap1String()
             );
